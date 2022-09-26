@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Faker.Console.Debug/1.0.0": {
+        "dependencies": {
+          "Faker": "1.0.0"
+        },
+        "runtime": {
+          "Faker.Console.Debug.dll": {}
+        }
+      },
+      "Faker/1.0.0": {
+        "runtime": {
+          "Faker.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Faker.Console.Debug/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Faker/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
