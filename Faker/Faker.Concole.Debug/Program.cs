@@ -13,27 +13,26 @@ enum DayTime
     Night
 }
 
-public class A
-{
-    public int AA { get; set; }
-    public double B { get; set; }
-}
-
 public class C
 {
     public C(){}
-    public C(int a, int f, string ef) { A = a; this.f = f; str = ef; }
+    private C(int a, int f, string ef) { A = 5; this.f = f; str = "private"; }
     public C(int a) { A = a; }
     public int A { get; set; }
     public string str;
     public int f;
-    public int cvcv;
-    public A aa;
+}
+
+public class A
+{
+    public int Adc { get; set; }
+    public string str;
+    public int qw;
     public B B { get; set; }
 }
 
 public struct B
 {
-    public int A { get; set; }
-    public double BB { get; set; }
+    public int DCsdc { get; set; }
+    public A A { get; set; }
 }
