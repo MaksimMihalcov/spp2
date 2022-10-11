@@ -16,8 +16,8 @@ enum DayTime
 public class C
 {
     public C(){}
-    private C(int a, int f, string ef) { A = 5; this.f = f; str = "private"; }
-    public C(int a) { A = a; }
+    private C(int a, int f, string ef) { A = 5; this.f = f; str = "private"; throw new Exception(); }
+    public C(int a) { A = 666; }
     public int A { get; set; }
     public string str;
     public int f;

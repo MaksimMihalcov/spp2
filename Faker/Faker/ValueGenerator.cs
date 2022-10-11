@@ -45,23 +45,24 @@ namespace Faker
 
         private object GenerateNonPrimitiveType(Type type)
         {
-            var constructors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            object obj;
-            if (constructors.Length == 0)
+            var constructors = (type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)).OrderByDescending(x =>x.GetParameters().Length).ToList();
+            object obj = Activator.CreateInstance(type);
+            if (constructors.Count != 0)
             {
-                obj = Activator.CreateInstance(type);
-            }
-            else
-            {
-                ConstructorInfo constructor = constructors[0];
-                for(int i = 0; i < constructors.Length; i++)
-                    if(constructors[i].GetParameters().Length > constructor.GetParameters().Length)
+                ConstructorInfo constructor;
+                for(int i = 0; i < constructors.Count; i++)
+                    try
+                    {
                         constructor = constructors[i];
-                var parameters = constructor.GetParameters();
-                var prms = new ArrayList();
-                for (int i = 0; i < parameters.Length; i++)
-                    prms.Add(Generate(parameters[i].ParameterType));
-                obj = constructor.Invoke(prms.ToArray());
+                        var parameters = constructor.GetParameters();
+                        var prms = new ArrayList();
+                        for (int j = 0; j < parameters.Length; j++)
+                            prms.Add(Generate(parameters[j].ParameterType));
+                        obj = constructor.Invoke(prms.ToArray());
+                        break;
+                    }
+                    catch { }
+                
             }
             var properties = type.GetProperties();
             var fields = type.GetFields();
@@ -70,7 +71,7 @@ namespace Faker
             {
                 property = type.GetProperty(properties[i].Name, BindingFlags.Public | BindingFlags.Instance);
                 var value = property.GetValue(obj, null);
-                if ((value == null) || (properties[i].PropertyType.IsValueType && !properties[i].PropertyType.IsPrimitive) || (properties[i].PropertyType.IsPrimitive && ((int)value) == 0))
+                if ((value == null) || (properties[i].PropertyType.IsValueType && !properties[i].PropertyType.IsPrimitive) || (properties[i].PropertyType.IsPrimitive && (Convert.ToInt32(value)) == 0))
                     property.SetValue(obj, Generate(properties[i].PropertyType), null);
             }
             FieldInfo field;
@@ -78,7 +79,7 @@ namespace Faker
             {
                 field = type.GetField(fields[i].Name, BindingFlags.Public | BindingFlags.Instance);
                 var value = field.GetValue(obj);
-                if ((value == null) || (fields[i].FieldType.IsPrimitive && ((int)value) == 0))
+                if ((value == null) || (fields[i].FieldType.IsPrimitive && (Convert.ToInt32(value)) == 0))
                     field.SetValue(obj, Generate(fields[i].FieldType));
             }
             return obj;
